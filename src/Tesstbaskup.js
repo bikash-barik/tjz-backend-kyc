@@ -108,6 +108,18 @@ app.post('/saveLocation', (req, res) => {
     });
 });
 
+// New GET endpoint to retrieve all locations
+app.get('/getLocations', (req, res) => {
+    Location.find({})
+    .then(locations => {
+        res.status(200).json(locations);
+    })
+    .catch(err => {
+        console.error("Error retrieving locations: ", err);
+        res.sendStatus(500); // Send error response
+    });
+});
+
 const server = app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

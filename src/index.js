@@ -3,31 +3,8 @@ const multer = require('multer');
 const { photoVerify, extractPassportInfo } = require('./verifyPhoto');
 const fs = require('fs');
 const cors = require('cors');
-const mongoose = require('mongoose');
-
 const app = express();
-const port = process.env.PORT || 3000;
-
-// Connect to MongoDB Atlas
-mongoose.connect('mongodb+srv://bikash:bikash@cluster0.zvx2v5a.mongodb.net/location?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log("Connected to MongoDB Atlas");
-})
-.catch((err) => {
-    console.error("Error connecting to MongoDB Atlas: ", err);
-});
-
-// Define schema for location data
-const locationSchema = new mongoose.Schema({
-    latitude: Number,
-    longitude: Number
-});
-
-// Create a model based on the schema
-const Location = mongoose.model('Location', locationSchema);
+const port = 3000;
 
 // Configure Multer for file uploads
 const upload = multer({ dest: 'Uploadimages/' });
@@ -86,42 +63,8 @@ app.post('/api/v1/extractPassportInfo', upload.single('idPhoto'), (req, res) => 
     }
 });
 
-app.post('/saveLocation', (req, res) => {
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-
-    // Create a new document using the Location model
-    const location = new Location({
-        latitude: latitude,
-        longitude: longitude
-    });
-
-    // Save the document to the database
-    location.save()
-    .then(() => {
-        console.log("Location saved successfully");
-        res.sendStatus(200); // Send success response
-    })
-    .catch((err) => {
-        console.error("Error saving location: ", err);
-        res.sendStatus(500); // Send error response
-    });
-});
-
-// New GET endpoint to retrieve all locations
-app.get('/getLocations', (req, res) => {
-    Location.find({})
-    .then(locations => {
-        res.status(200).json(locations);
-    })
-    .catch(err => {
-        console.error("Error retrieving locations: ", err);
-        res.sendStatus(500); // Send error response
-    });
-});
-
 const server = app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`Example app listening at http://localhost:${port}`);
 });
 
 server.on('error', (err) => {
