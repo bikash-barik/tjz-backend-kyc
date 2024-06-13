@@ -2,11 +2,14 @@ const express = require('express');
 const multer = require('multer');
 const { photoVerify, extractPassportInfo } = require('./verifyPhoto');
 const fs = require('fs');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
 // Configure Multer for file uploads
 const upload = multer({ dest: 'Uploadimages/' });
+
+app.use(cors());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
