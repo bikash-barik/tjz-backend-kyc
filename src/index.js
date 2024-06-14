@@ -42,11 +42,19 @@ app.post(
   (req, res) => {
     try {
 
-      let liveImage1 = req.files.find((f)=>f.fieldname === 'liveImage1').path;
-      let liveImage2 = req.files.find((f)=>f.fieldname === 'liveImage2').path;
-      let idPhoto = req.files.find((f)=>f.fieldname === 'idPhoto').path;
-      
-      photoVerify(liveImage1, liveImage2, idPhoto)
+      let liveImage1Name = req.files.find((f) => f.fieldname === 'liveImage1').filename;
+      const liveImage1Path = path.resolve(__dirname, "../kycupload/" + liveImage1Name);
+
+      let liveImage2Name = req.files.find((f) => f.fieldname === 'liveImage2').filename;
+      const liveImage2Path = path.resolve(__dirname, "../kycupload/" + liveImage2Name);
+
+      let idPhotoName = req.files.find((f) => f.fieldname === 'idPhoto').filename;
+      const idPhotoPath = path.resolve(__dirname, "../kycupload/" + idPhotoName);
+
+      photoVerify(
+        "data:image/jpeg;base64," + imageToBase64(liveImage1Path),
+        "data:image/jpeg;base64," + imageToBase64(liveImage2Path),
+        "data:image/jpeg;base64," + imageToBase64(idPhotoPath))
         .then((resp) => {
           res.status(200).send(resp);
         })
