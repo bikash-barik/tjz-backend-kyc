@@ -39,21 +39,13 @@ const imageToBase64 = (imagePath) => {
 
 app.post(
   "/api/v1/photoVerify",
-  upload.fields([
-    { name: "liveImage1" },
-    { name: "liveImage2" },
-    { name: "idPhoto" },
-  ]),
   (req, res) => {
     try {
-      const liveImage1 =
-        "data:image/jpeg;base64," +
-        imageToBase64(req.files["liveImage1"][0].path);
-      const liveImage2 =
-        "data:image/jpeg;base64," +
-        imageToBase64(req.files["liveImage2"][0].path);
-      const idPhoto =
-        "data:image/jpeg;base64," + imageToBase64(req.files["idPhoto"][0].path);
+
+      let liveImage1 = req.files.find((f)=>f.fieldname === 'liveImage1').path;
+      let liveImage2 = req.files.find((f)=>f.fieldname === 'liveImage2').path;
+      let idPhoto = req.files.find((f)=>f.fieldname === 'idPhoto').path;
+      
       photoVerify(liveImage1, liveImage2, idPhoto)
         .then((resp) => {
           res.status(200).send(resp);
@@ -69,11 +61,9 @@ app.post(
 
 app.post(
   "/api/v1/extractPassportInfo",
-  upload.single("idPhoto"),
   (req, res) => {
     try {
-      const idPhoto = imageToBase64(req.file.path);
-
+      const idPhoto = imageToBase64(req.files[0].path);
       extractPassportInfo(idPhoto)
         .then((resp) => {
           res.status(200).send(resp);
