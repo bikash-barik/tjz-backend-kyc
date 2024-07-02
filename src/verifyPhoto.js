@@ -49,8 +49,8 @@ async function extractPassportInfo(idPhoto) {
     return handleApiResponse(axios.post, "https://eve.idfy.com/v3/tasks/sync/extract/id_document", requestBody, {
         headers: {
             "Content-Type": "application/json",
-            "account-id": "0b84d9bb671d/6d029600-54e6-4b6f-a2bc-0f28172364fd",
-            "api-key": "e674aadb-89c2-441d-8b4b-a2ad1189e3d1",
+            "account-id": "14f2a7459ad7/448dd560-a684-4d3b-afcd-4a670e535d5b",
+            "api-key": "3d9d35c4-ec1c-4026-b37c-28ddf95c6e70",
         },
     });
 }
